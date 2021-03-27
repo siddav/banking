@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package banking;
+/**
+ MsgDelivery: branch requests on account
+**/
+service SyncAccount {
+  // Propogate_Deposit
+  rpc PropogateDeposit (SyncAccountRequest) returns (SyncAccountResponse) {}
+  // Propogate_Withdraw
+  rpc PropogateWithdraw (SyncAccountRequest) returns (SyncAccountResponse) {}
+}
+message SyncAccountRequest {
+    int32 amount = 1;
+} 
+message SyncAccountResponse {
+    string message = 1;
+}

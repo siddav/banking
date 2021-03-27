@@ -1,0 +1,47 @@
+18982 2021-03-27 12:18:33,647 **** start *****
+18982 2021-03-27 12:18:33,647 total branches 3
+18982 2021-03-27 12:18:33,647 total customers with events 6
+18982 2021-03-27 12:18:33,654 Branch Process started 1:50051:18984
+18982 2021-03-27 12:18:33,657 Branch Process started 2:50052:18985
+18982 2021-03-27 12:18:33,660 Branch Process started 3:50053:18986
+18982 2021-03-27 12:18:33,661 processing customer events
+18984 2021-03-27 12:18:33,794 **** starting branch ****1 on port 50051
+18984 2021-03-27 12:18:33,800 **** started branch ****1 on port 50051
+18985 2021-03-27 12:18:33,800 **** starting branch ****2 on port 50052
+18986 2021-03-27 12:18:33,801 **** starting branch ****3 on port 50053
+18985 2021-03-27 12:18:33,805 **** started branch ****2 on port 50052
+18986 2021-03-27 12:18:33,807 **** started branch ****3 on port 50053
+18982 2021-03-27 12:18:36,666 processing events for customer 1
+18984 2021-03-27 12:18:36,675 received request Query to: 1
+18982 2021-03-27 12:18:36,676 Customer received: sucess
+18982 2021-03-27 12:18:36,676 processing events for customer 2
+18985 2021-03-27 12:18:36,678 received request Deposit to: 2
+18985 2021-03-27 12:18:36,683 PropogateDeposit from: 2 to: 1 deposit:170 response: success
+18985 2021-03-27 12:18:36,685 PropogateDeposit from: 2 to: 3 deposit:170 response: success
+18982 2021-03-27 12:18:36,686 Customer deposited: success
+18985 2021-03-27 12:18:36,688 received request Query to: 2
+18982 2021-03-27 12:18:36,688 Customer received: sucess
+18982 2021-03-27 12:18:36,689 processing events for customer 3
+18986 2021-03-27 12:18:36,690 received request Withdraw to: 3
+18986 2021-03-27 12:18:36,695 PropogateWithdraw from: 3 to: 1 deposit:70 response: success
+18986 2021-03-27 12:18:36,696 PropogateWithdraw from: 3 to: 2 deposit:70 response: success
+18982 2021-03-27 12:18:36,697 Customer withdrew: success
+18986 2021-03-27 12:18:36,699 received request Query to: 3
+18982 2021-03-27 12:18:36,699 Customer received: sucess
+18982 2021-03-27 12:18:36,699 processing events for customer 1
+18984 2021-03-27 12:18:36,700 received request Query to: 1
+18982 2021-03-27 12:18:36,701 Customer received: sucess
+18982 2021-03-27 12:18:36,701 processing events for customer 2
+18985 2021-03-27 12:18:36,702 received request Query to: 2
+18982 2021-03-27 12:18:36,702 Customer received: sucess
+18982 2021-03-27 12:18:36,703 processing events for customer 3
+18986 2021-03-27 12:18:36,704 received request Query to: 3
+18982 2021-03-27 12:18:36,704 Customer received: sucess
+18982 2021-03-27 12:18:36,705 completed processing customer events
+18982 2021-03-27 12:18:36,705 completed writing to output.json
+18982 2021-03-27 12:18:36,705 **** terminating branch process 1 ****
+18982 2021-03-27 12:18:38,711 **** killing branch process 1 ****
+18982 2021-03-27 12:18:38,711 **** terminating branch process 2 ****
+18982 2021-03-27 12:18:40,715 **** killing branch process 2 ****
+18982 2021-03-27 12:18:40,715 **** terminating branch process 3 ****
+18982 2021-03-27 12:18:42,719 **** end *****

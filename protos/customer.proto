@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+package banking;
+/**
+ MsgDelivery: customer requests on account
+ **/
+service Account {
+  rpc Query(google.protobuf.Empty) returns (AccountResponse) {}
+  rpc Deposit (AccountRequest) returns (AccountResponse) {}
+  rpc Withdraw (AccountRequest) returns (AccountResponse) {}
+}
+message AccountRequest {
+    int32 amount = 1;
+} 
+message AccountResponse {
+    string message = 1;
+    int32 money = 2;
+}
