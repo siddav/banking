@@ -6,7 +6,9 @@ import branch_pb2 as branch__pb2
 
 
 class SyncAccountStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """*
+    MsgDelivery: branch requests on account
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -27,16 +29,20 @@ class SyncAccountStub(object):
 
 
 class SyncAccountServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """*
+    MsgDelivery: branch requests on account
+    """
 
     def PropogateDeposit(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Propogate_Deposit
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def PropogateWithdraw(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Propogate_Withdraw
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -62,7 +68,9 @@ def add_SyncAccountServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class SyncAccount(object):
-    """Missing associated documentation comment in .proto file."""
+    """*
+    MsgDelivery: branch requests on account
+    """
 
     @staticmethod
     def PropogateDeposit(request,

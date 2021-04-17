@@ -7,7 +7,9 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class AccountStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """*
+    MsgDelivery: customer requests on account
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -33,7 +35,9 @@ class AccountStub(object):
 
 
 class AccountServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """*
+    MsgDelivery: customer requests on account
+    """
 
     def Query(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -79,7 +83,9 @@ def add_AccountServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class Account(object):
-    """Missing associated documentation comment in .proto file."""
+    """*
+    MsgDelivery: customer requests on account
+    """
 
     @staticmethod
     def Query(request,

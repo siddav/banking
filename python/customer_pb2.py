@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x63ustomer.proto\x12\x07\x62\x61nking\x1a\x1bgoogle/protobuf/empty.proto\" \n\x0e\x41\x63\x63ountRequest\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x05\"1\n\x0f\x41\x63\x63ountResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\r\n\x05money\x18\x02 \x01(\x05\x32\xc7\x01\n\x07\x41\x63\x63ount\x12;\n\x05Query\x12\x16.google.protobuf.Empty\x1a\x18.banking.AccountResponse\"\x00\x12>\n\x07\x44\x65posit\x12\x17.banking.AccountRequest\x1a\x18.banking.AccountResponse\"\x00\x12?\n\x08Withdraw\x12\x17.banking.AccountRequest\x1a\x18.banking.AccountResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0e\x63ustomer.proto\x12\x07\x62\x61nking\x1a\x1bgoogle/protobuf/empty.proto\"Q\n\x0e\x41\x63\x63ountRequest\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x05\x12\r\n\x05\x63lock\x18\x02 \x01(\x05\x12\x14\n\x07\x65ventId\x18\x03 \x01(\x05H\x00\x88\x01\x01\x42\n\n\x08_eventId\"b\n\x0f\x41\x63\x63ountResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\r\n\x05money\x18\x02 \x01(\x05\x12\r\n\x05\x63lock\x18\x03 \x01(\x05\x12\x14\n\x07\x65ventId\x18\x04 \x01(\x05H\x00\x88\x01\x01\x42\n\n\x08_eventId2\xc7\x01\n\x07\x41\x63\x63ount\x12;\n\x05Query\x12\x16.google.protobuf.Empty\x1a\x18.banking.AccountResponse\"\x00\x12>\n\x07\x44\x65posit\x12\x17.banking.AccountRequest\x1a\x18.banking.AccountResponse\"\x00\x12?\n\x08Withdraw\x12\x17.banking.AccountRequest\x1a\x18.banking.AccountResponse\"\x00\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -42,6 +42,20 @@ _ACCOUNTREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='clock', full_name='banking.AccountRequest.clock', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='eventId', full_name='banking.AccountRequest.eventId', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -53,9 +67,14 @@ _ACCOUNTREQUEST = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='_eventId', full_name='banking.AccountRequest._eventId',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
   serialized_start=56,
-  serialized_end=88,
+  serialized_end=137,
 )
 
 
@@ -81,6 +100,20 @@ _ACCOUNTRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='clock', full_name='banking.AccountResponse.clock', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='eventId', full_name='banking.AccountResponse.eventId', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -92,11 +125,22 @@ _ACCOUNTRESPONSE = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='_eventId', full_name='banking.AccountResponse._eventId',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
   ],
-  serialized_start=90,
-  serialized_end=139,
+  serialized_start=139,
+  serialized_end=237,
 )
 
+_ACCOUNTREQUEST.oneofs_by_name['_eventId'].fields.append(
+  _ACCOUNTREQUEST.fields_by_name['eventId'])
+_ACCOUNTREQUEST.fields_by_name['eventId'].containing_oneof = _ACCOUNTREQUEST.oneofs_by_name['_eventId']
+_ACCOUNTRESPONSE.oneofs_by_name['_eventId'].fields.append(
+  _ACCOUNTRESPONSE.fields_by_name['eventId'])
+_ACCOUNTRESPONSE.fields_by_name['eventId'].containing_oneof = _ACCOUNTRESPONSE.oneofs_by_name['_eventId']
 DESCRIPTOR.message_types_by_name['AccountRequest'] = _ACCOUNTREQUEST
 DESCRIPTOR.message_types_by_name['AccountResponse'] = _ACCOUNTRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -124,8 +168,8 @@ _ACCOUNT = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=142,
-  serialized_end=341,
+  serialized_start=240,
+  serialized_end=439,
   methods=[
   _descriptor.MethodDescriptor(
     name='Query',
