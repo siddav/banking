@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0c\x62ranch.proto\x12\x07\x62\x61nking\"$\n\x12SyncAccountRequest\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x05\"&\n\x13SyncAccountResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xb0\x01\n\x0bSyncAccount\x12O\n\x10PropogateDeposit\x12\x1b.banking.SyncAccountRequest\x1a\x1c.banking.SyncAccountResponse\"\x00\x12P\n\x11PropogateWithdraw\x12\x1b.banking.SyncAccountRequest\x1a\x1c.banking.SyncAccountResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0c\x62ranch.proto\x12\x07\x62\x61nking\"T\n\x12SyncAccountRequest\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x05\x12\x12\n\ncustomerId\x18\x02 \x01(\t\x12\x1a\n\x12write_operation_id\x18\x03 \x01(\x05\"&\n\x13SyncAccountResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xb0\x01\n\x0bSyncAccount\x12O\n\x10PropogateDeposit\x12\x1b.banking.SyncAccountRequest\x1a\x1c.banking.SyncAccountResponse\"\x00\x12P\n\x11PropogateWithdraw\x12\x1b.banking.SyncAccountRequest\x1a\x1c.banking.SyncAccountResponse\"\x00\x62\x06proto3'
 )
 
 
@@ -40,6 +40,20 @@ _SYNCACCOUNTREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='customerId', full_name='banking.SyncAccountRequest.customerId', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='write_operation_id', full_name='banking.SyncAccountRequest.write_operation_id', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -53,7 +67,7 @@ _SYNCACCOUNTREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=25,
-  serialized_end=61,
+  serialized_end=109,
 )
 
 
@@ -84,8 +98,8 @@ _SYNCACCOUNTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=63,
-  serialized_end=101,
+  serialized_start=111,
+  serialized_end=149,
 )
 
 DESCRIPTOR.message_types_by_name['SyncAccountRequest'] = _SYNCACCOUNTREQUEST
@@ -115,8 +129,8 @@ _SYNCACCOUNT = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=104,
-  serialized_end=280,
+  serialized_start=152,
+  serialized_end=328,
   methods=[
   _descriptor.MethodDescriptor(
     name='PropogateDeposit',

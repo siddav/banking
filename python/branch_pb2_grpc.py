@@ -30,13 +30,15 @@ class SyncAccountServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def PropogateDeposit(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Propogate_Deposit
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def PropogateWithdraw(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Propogate_Withdraw
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')

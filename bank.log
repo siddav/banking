@@ -1,47 +1,141 @@
-18982 2021-03-27 12:18:33,647 **** start *****
-18982 2021-03-27 12:18:33,647 total branches 3
-18982 2021-03-27 12:18:33,647 total customers with events 6
-18982 2021-03-27 12:18:33,654 Branch Process started 1:50051:18984
-18982 2021-03-27 12:18:33,657 Branch Process started 2:50052:18985
-18982 2021-03-27 12:18:33,660 Branch Process started 3:50053:18986
-18982 2021-03-27 12:18:33,661 processing customer events
-18984 2021-03-27 12:18:33,794 **** starting branch ****1 on port 50051
-18984 2021-03-27 12:18:33,800 **** started branch ****1 on port 50051
-18985 2021-03-27 12:18:33,800 **** starting branch ****2 on port 50052
-18986 2021-03-27 12:18:33,801 **** starting branch ****3 on port 50053
-18985 2021-03-27 12:18:33,805 **** started branch ****2 on port 50052
-18986 2021-03-27 12:18:33,807 **** started branch ****3 on port 50053
-18982 2021-03-27 12:18:36,666 processing events for customer 1
-18984 2021-03-27 12:18:36,675 received request Query to: 1
-18982 2021-03-27 12:18:36,676 Customer received: sucess
-18982 2021-03-27 12:18:36,676 processing events for customer 2
-18985 2021-03-27 12:18:36,678 received request Deposit to: 2
-18985 2021-03-27 12:18:36,683 PropogateDeposit from: 2 to: 1 deposit:170 response: success
-18985 2021-03-27 12:18:36,685 PropogateDeposit from: 2 to: 3 deposit:170 response: success
-18982 2021-03-27 12:18:36,686 Customer deposited: success
-18985 2021-03-27 12:18:36,688 received request Query to: 2
-18982 2021-03-27 12:18:36,688 Customer received: sucess
-18982 2021-03-27 12:18:36,689 processing events for customer 3
-18986 2021-03-27 12:18:36,690 received request Withdraw to: 3
-18986 2021-03-27 12:18:36,695 PropogateWithdraw from: 3 to: 1 deposit:70 response: success
-18986 2021-03-27 12:18:36,696 PropogateWithdraw from: 3 to: 2 deposit:70 response: success
-18982 2021-03-27 12:18:36,697 Customer withdrew: success
-18986 2021-03-27 12:18:36,699 received request Query to: 3
-18982 2021-03-27 12:18:36,699 Customer received: sucess
-18982 2021-03-27 12:18:36,699 processing events for customer 1
-18984 2021-03-27 12:18:36,700 received request Query to: 1
-18982 2021-03-27 12:18:36,701 Customer received: sucess
-18982 2021-03-27 12:18:36,701 processing events for customer 2
-18985 2021-03-27 12:18:36,702 received request Query to: 2
-18982 2021-03-27 12:18:36,702 Customer received: sucess
-18982 2021-03-27 12:18:36,703 processing events for customer 3
-18986 2021-03-27 12:18:36,704 received request Query to: 3
-18982 2021-03-27 12:18:36,704 Customer received: sucess
-18982 2021-03-27 12:18:36,705 completed processing customer events
-18982 2021-03-27 12:18:36,705 completed writing to output.json
-18982 2021-03-27 12:18:36,705 **** terminating branch process 1 ****
-18982 2021-03-27 12:18:38,711 **** killing branch process 1 ****
-18982 2021-03-27 12:18:38,711 **** terminating branch process 2 ****
-18982 2021-03-27 12:18:40,715 **** killing branch process 2 ****
-18982 2021-03-27 12:18:40,715 **** terminating branch process 3 ****
-18982 2021-03-27 12:18:42,719 **** end *****
+84383 2021-04-25 13:04:47,228 **** start *****
+84383 2021-04-25 13:04:47,228 **** Processing file ***** monotonic_writes_input.json
+84383 2021-04-25 13:04:47,228 total branches 2
+84383 2021-04-25 13:04:47,234 Branch Process started 1:50051:84385
+84383 2021-04-25 13:04:47,236 Branch Process started 2:50052:84386
+84383 2021-04-25 13:04:47,237 processing customer events
+84385 2021-04-25 13:04:47,357 **** starting branch ****1 on port 50051
+84386 2021-04-25 13:04:47,359 **** starting branch ****2 on port 50052
+84385 2021-04-25 13:04:47,362 **** started branch ****1 on port 50051
+84386 2021-04-25 13:04:47,365 **** started branch ****2 on port 50052
+84383 2021-04-25 13:04:50,241 Customer Process started (customerId:processId) 1:84387
+84387 2021-04-25 13:04:50,358 Processing event: deposit for customer 1:
+84385 2021-04-25 13:04:50,362 received request Deposit to: 1 from customer 1 
+84387 2021-04-25 13:04:50,363 Customer 1 deposited: success
+84387 2021-04-25 13:04:50,363 Processed event id: deposit for customer 1 response success:
+84387 2021-04-25 13:04:50,364 Processing event: withdraw for customer 1:
+84386 2021-04-25 13:04:50,365 received request Withdraw to: 2 from customer 1 
+84387 2021-04-25 13:04:52,367 Customer 1 withdrew: success
+84387 2021-04-25 13:04:52,368 Processed event id: withdraw for customer 1 response success:
+84387 2021-04-25 13:04:52,368 Processing event: query for customer 1:
+84386 2021-04-25 13:04:52,372 vinod ==== AsyncPropogateWithdraw === customerId 1 === operationId 201 ==== amount 400
+84386 2021-04-25 13:04:52,373 received request Query to: 2 from customer 1 
+84387 2021-04-25 13:04:52,373 Customer 1 received: sucess
+84387 2021-04-25 13:04:52,374 Processed event id: query for customer 1 response sucess:
+84383 2021-04-25 13:04:52,399 processed all customer events
+84383 2021-04-25 13:04:52,400 **** terminating branch process 1 ****
+84383 2021-04-25 13:04:54,401 **** terminating branch process 2 ****
+84383 2021-04-25 13:04:56,403 **** Processing file ***** read_your_writes_input.json
+84383 2021-04-25 13:04:56,403 total branches 0
+84383 2021-04-25 13:04:56,403 processing customer events
+84383 2021-04-25 13:04:59,411 Customer Process started (customerId:processId) 1:84406
+84406 2021-04-25 13:04:59,529 Processing event: deposit for customer 1:
+84383 2021-04-25 13:04:59,554 processed all customer events
+84383 2021-04-25 13:04:59,554 **** end *****
+84580 2021-04-25 13:12:57,833 **** start *****
+84580 2021-04-25 13:12:57,833 **** Processing file ***** monotonic_writes_input.json
+84580 2021-04-25 13:12:57,833 total branches 2
+84580 2021-04-25 13:12:57,839 Branch Process started 1:50051:84582
+84580 2021-04-25 13:12:57,842 Branch Process started 2:50052:84583
+84580 2021-04-25 13:12:57,843 processing customer events
+84582 2021-04-25 13:12:57,964 **** starting branch ****1 on port 50051
+84583 2021-04-25 13:12:57,967 **** starting branch ****2 on port 50052
+84582 2021-04-25 13:12:57,970 **** started branch ****1 on port 50051
+84583 2021-04-25 13:12:57,973 **** started branch ****2 on port 50052
+84580 2021-04-25 13:13:00,851 Customer Process started (customerId:processId) 1:84584
+84584 2021-04-25 13:13:00,968 Processing event: deposit for customer 1:
+84582 2021-04-25 13:13:00,973 received request Deposit to: 1 from customer 1 
+84584 2021-04-25 13:13:00,974 Customer 1 deposited: success
+84584 2021-04-25 13:13:00,974 Processed event id: deposit for customer 1 response success:
+84584 2021-04-25 13:13:00,974 Processing event: withdraw for customer 1:
+84583 2021-04-25 13:13:00,976 received request Withdraw to: 2 from customer 1 
+84584 2021-04-25 13:13:02,982 Customer 1 withdrew: success
+84584 2021-04-25 13:13:02,983 Processed event id: withdraw for customer 1 response success:
+84584 2021-04-25 13:13:02,983 Processing event: query for customer 1:
+84583 2021-04-25 13:13:02,987 vinod ==== AsyncPropogateWithdraw === customerId 1 === operationId 201 ==== amount 400
+84583 2021-04-25 13:13:02,987 received request Query to: 2 from customer 1 
+84584 2021-04-25 13:13:02,988 Customer 1 received: sucess
+84584 2021-04-25 13:13:02,988 Processed event id: query for customer 1 response sucess:
+84580 2021-04-25 13:13:03,005 processed all customer events
+84580 2021-04-25 13:13:06,010 **** terminating branch process 1 ****
+84580 2021-04-25 13:13:08,012 **** terminating branch process 2 ****
+84580 2021-04-25 13:13:10,014 **** Processing file ***** read_your_writes_input.json
+84580 2021-04-25 13:13:10,014 total branches 0
+84580 2021-04-25 13:13:10,015 processing customer events
+84580 2021-04-25 13:13:13,022 Customer Process started (customerId:processId) 1:84607
+84607 2021-04-25 13:13:13,136 Processing event: deposit for customer 1:
+84580 2021-04-25 13:13:13,159 processed all customer events
+84580 2021-04-25 13:13:16,164 **** end *****
+85130 2021-04-25 13:27:41,028 **** start *****
+85130 2021-04-25 13:27:41,028 **** Processing file ***** read_your_writes_input.json
+85130 2021-04-25 13:27:41,028 total branches 0
+85130 2021-04-25 13:27:41,028 processing customer events
+85130 2021-04-25 13:27:44,038 Customer Process started (customerId:processId) 1:85140
+85140 2021-04-25 13:27:44,161 Processing event: deposit for customer 1:
+85130 2021-04-25 13:27:44,187 processed all customer events
+85130 2021-04-25 13:27:47,192 **** end *****
+85220 2021-04-25 13:29:26,479 **** start *****
+85220 2021-04-25 13:29:26,479 **** Processing file ***** read_your_writes_input.json
+85220 2021-04-25 13:29:26,479 total branches 2
+85220 2021-04-25 13:29:26,487 processing customer events
+85222 2021-04-25 13:29:26,624 **** starting branch ****1 on port 50051
+85223 2021-04-25 13:29:26,625 **** starting branch ****2 on port 50052
+85222 2021-04-25 13:29:26,626 **** started branch ****1 on port 50051
+85223 2021-04-25 13:29:26,627 **** started branch ****2 on port 50052
+85220 2021-04-25 13:29:29,497 Customer Process started (customerId:processId) 1:85224
+85224 2021-04-25 13:29:29,614 Processing event: deposit for customer 1:
+85222 2021-04-25 13:29:29,618 received request Deposit to: 1 from customer 1 
+85224 2021-04-25 13:29:29,619 Customer 1 deposited: success
+85224 2021-04-25 13:29:29,619 Processed event id: deposit for customer 1 response success:
+85224 2021-04-25 13:29:29,619 Processing event: query for customer 1:
+85223 2021-04-25 13:29:29,621 received request Query to: 2 from customer 1 
+85224 2021-04-25 13:29:31,622 Customer 1 received: sucess
+85224 2021-04-25 13:29:31,623 Processed event id: query for customer 1 response sucess:
+85220 2021-04-25 13:29:31,641 processed all customer events
+85220 2021-04-25 13:29:31,641 **** terminating branch process 1 ****
+85220 2021-04-25 13:29:33,643 **** terminating branch process 2 ****
+85220 2021-04-25 13:29:35,648 **** end *****
+85420 2021-04-25 13:30:26,458 **** start *****
+85420 2021-04-25 13:30:26,458 **** Processing file ***** monotonic_writes_input.json
+85420 2021-04-25 13:30:26,458 total branches 2
+85420 2021-04-25 13:30:26,466 processing customer events
+85423 2021-04-25 13:30:26,598 **** starting branch ****1 on port 50051
+85424 2021-04-25 13:30:26,599 **** starting branch ****2 on port 50052
+85423 2021-04-25 13:30:26,599 **** started branch ****1 on port 50051
+85424 2021-04-25 13:30:26,601 **** started branch ****2 on port 50052
+85420 2021-04-25 13:30:29,473 Customer Process started (customerId:processId) 1:85425
+85425 2021-04-25 13:30:29,591 Processing event: deposit for customer 1:
+85423 2021-04-25 13:30:29,595 received request Deposit to: 1 from customer 1 
+85425 2021-04-25 13:30:29,596 Customer 1 deposited: success
+85425 2021-04-25 13:30:29,596 Processed event id: deposit for customer 1 response success:
+85425 2021-04-25 13:30:29,596 Processing event: withdraw for customer 1:
+85424 2021-04-25 13:30:29,598 received request Withdraw to: 2 from customer 1 
+85425 2021-04-25 13:30:31,599 Customer 1 withdrew: success
+85425 2021-04-25 13:30:31,600 Processed event id: withdraw for customer 1 response success:
+85425 2021-04-25 13:30:31,600 Processing event: query for customer 1:
+85424 2021-04-25 13:30:31,603 received request Query to: 2 from customer 1 
+85425 2021-04-25 13:30:31,604 Customer 1 received: sucess
+85425 2021-04-25 13:30:31,605 Processed event id: query for customer 1 response sucess:
+85420 2021-04-25 13:30:31,627 processed all customer events
+85420 2021-04-25 13:30:31,627 **** terminating branch process 1 ****
+85420 2021-04-25 13:30:33,628 **** terminating branch process 2 ****
+85420 2021-04-25 13:30:35,628 **** Processing file ***** read_your_writes_input.json
+85420 2021-04-25 13:30:35,628 total branches 2
+85420 2021-04-25 13:30:35,632 processing customer events
+85801 2021-04-25 13:30:35,778 **** starting branch ****1 on port 60061
+85803 2021-04-25 13:30:35,778 **** starting branch ****2 on port 60062
+85801 2021-04-25 13:30:35,780 **** started branch ****1 on port 60061
+85803 2021-04-25 13:30:35,780 **** started branch ****2 on port 60062
+85420 2021-04-25 13:30:38,637 Customer Process started (customerId:processId) 1:86344
+86344 2021-04-25 13:30:38,841 Processing event: deposit for customer 1:
+85801 2021-04-25 13:30:38,848 received request Deposit to: 1 from customer 1 
+86344 2021-04-25 13:30:38,849 Customer 1 deposited: success
+86344 2021-04-25 13:30:38,849 Processed event id: deposit for customer 1 response success:
+86344 2021-04-25 13:30:38,850 Processing event: query for customer 1:
+85803 2021-04-25 13:30:38,852 received request Query to: 2 from customer 1 
+86344 2021-04-25 13:30:40,857 Customer 1 received: sucess
+86344 2021-04-25 13:30:40,858 Processed event id: query for customer 1 response sucess:
+85420 2021-04-25 13:30:40,875 processed all customer events
+85420 2021-04-25 13:30:40,876 **** terminating branch process 1 ****
+85420 2021-04-25 13:30:42,878 **** terminating branch process 2 ****
+85420 2021-04-25 13:30:44,878 **** end *****
