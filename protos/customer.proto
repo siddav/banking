@@ -1,23 +1,26 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
 package banking;
 /**
  MsgDelivery: customer requests on account
  **/
-service Account {
-  rpc Query(google.protobuf.Empty) returns (AccountResponse) {}
-  rpc Deposit (AccountRequest) returns (AccountResponse) {}
-  rpc Withdraw (AccountRequest) returns (AccountResponse) {}
+message WriteSet {
+  repeated int32 write_operation_ids = 1;
 }
-message AccountRequest {
-    int32 amount = 1;
-    int32 clock = 2;
-    optional int32 eventId = 3;
+
+message AccountRequest {  
+  string customerId = 1;
+  optional int32 amount = 2;
+  optional WriteSet writeset = 3;
 } 
 message AccountResponse {
-    string message = 1;
-    int32 money = 2;
-    int32 clock = 3;
-    optional int32 eventId = 4;
+  string message = 1;
+  optional int32 money = 2;
+  optional int32 write_operation_id = 3;
+}
+
+service Account {
+  rpc Query(AccountRequest) returns (AccountResponse) {}
+  rpc Deposit(AccountRequest) returns (AccountResponse) {}
+  rpc Withdraw(AccountRequest) returns (AccountResponse) {}
 }

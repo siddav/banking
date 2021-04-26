@@ -1,207 +1,168 @@
 from concurrent import futures
-from clock import Clock
+from collections import defaultdict
+from account import Account
+from IdGenerator import IdGenerator
 import grpc
 import customer_pb2
 import customer_pb2_grpc
 import branch_pb2
 import branch_pb2_grpc
+import time
+import multiprocessing
+import threading
 import logging
 
 logging.basicConfig(filename='bank.log', encoding='utf-8', level=logging.DEBUG, format='%(process)d %(asctime)s %(message)s')
-PORT_BASE = 50050                        
 
-# Method to track every event request received by the branch
-def Event_Request(branchId, eventId, eventName, clock, remoteClock, queue):
-    localClock = clock.getClock()
-    clock.setClock(max(localClock, remoteClock) + 1)
-    logBranchEvent(branchId, eventId, eventName, clock.getClock(), queue)
-
-# Method to track every event execute by the branch
-def Event_Execute(branchId, eventId, eventName, clock, queue):
-    clock.incrementClock(1)
-    logBranchEvent(branchId, eventId, eventName, clock.getClock(), queue)
-
-# Method to track every propogate request received by the branch
-def Propogate_Request(branchId, eventId, eventName, clock, remoteClock, queue):
-    localClock = clock.getClock()
-    clock.setClock(max(localClock, remoteClock) + 1)
-    logBranchEvent(branchId, eventId, eventName, clock.getClock(), queue)
-
-# Method to track propogate execute received by the branch
-def Propogate_Execute(branchId, eventId, eventName, clock, queue):    
-    clock.incrementClock(1) 
-    logBranchEvent(branchId, eventId, eventName, clock.getClock(), queue)
-
-# Method to track propogate response received by each branch
-def Propogate_Response(branchId, eventId, eventName, clock, remoteClock, queue):
-    localClock = clock.getClock()
-    clock.setClock(max(localClock, remoteClock) + 1)
-    logBranchEvent(branchId, eventId, eventName, clock.getClock(), queue)
-
-# Method to track event response to the customer
-def Event_Response(branchId, eventId, eventName, clock, queue):    
-    clock.incrementClock(1) 
-    logBranchEvent(branchId, eventId, eventName, clock.getClock(), queue)
-
-# Log the event to the queue
-def logEvent(eventId, eventName, clock, queue):
-    entry = {}
-    entry["type"] = 'event'
-    entry["eventId"] = eventId
-    entry["name"] = eventName
-    entry["clock"] = clock
-    queue.put(entry)    
-
-# Log the branch event to the queue
-def logBranchEvent(processId, eventId, eventName, clock, queue):
-    entry = {}
-    entry["type"] = 'branch'
-    entry["processId"] = processId
-    entry["eventId"] = eventId
-    entry["name"] = eventName
-    entry["clock"] = clock
-    queue.put(entry)
-    logEvent(eventId, eventName, clock, queue)    
-
-# service related to branch-branch communications
-class BranchService(branch_pb2_grpc.SyncAccountServicer):
-    def __init__(self, branchId, account, clock, queue):
-        self.account = account
-        self.clock = clock
-        self.branchId = branchId
-        self.queue = queue
-
-    def PropogateDeposit(self, request, context):
-        amount = request.amount
-        remoteClock = request.clock        
-        eventId = request.eventId
-        #Propogate Request        
-        Propogate_Request(self.branchId, eventId, 'deposit_broadcast_request', self.clock, remoteClock, self.queue)        
-        self.account.deposit(amount)
-        #Propogate Execute        
-        Propogate_Execute(self.branchId, eventId, 'deposit_broadcast_execute', self.clock, self.queue)
-        return branch_pb2.SyncAccountResponse(message="success", clock=self.clock.getClock(),eventId=eventId)
-
-    def PropogateWithdraw(self, request, context):
-        amount = request.amount
-        remoteClock = request.clock        
-        eventId = request.eventId
-        #Propogate Request        
-        Propogate_Request(self.branchId, eventId, 'withdraw_broadcast_request', self.clock, remoteClock, self.queue)        
-        self.account.withdraw(amount)        
-        #Propogate Execute
-        Propogate_Execute(self.branchId, eventId, 'withdraw_broadcast_execute', self.clock, self.queue)
-        return branch_pb2.SyncAccountResponse(message="success", clock=self.clock.getClock(), eventId=eventId)      
-
-# service related to customer-branch communications
-class AccountService(customer_pb2_grpc.AccountServicer):
-    def __init__(self, branches, branchId, account, clock, queue):
+class Branch:
+    def __init__(self, branches, branchId, balance, port_base):        
+        self.account = Account(balance)
+        self.port_base = port_base
         self.branches = branches
         self.branchId = branchId
-        self.account = account
-        self.clock = clock
-        self.queue = queue                
-
-    # Method to return the balance of the customer
+        self.port = self.port_base + branchId
+        self.idGenerator = IdGenerator(branchId * 100)
+        # writeset to maintain write operations per customer
+        self.writesets = defaultdict()
+    
     def Query(self, request, context):
-        logging.info("received request Query to: {}".format(self.branchId))
-        balance = self.account.balance        
+        customerId = request.customerId
+        logging.info("received request Query to: {} from customer {} ".format(self.branchId, customerId))
+        #customerId = request.customerId
+        customerWriteSet = request.writeset
+
+        status = self.waitForWriteSetPropogation(customerId, customerWriteSet)
+        balance = self.account.balance
+
+        # if write is not propogated with retry mechanism returning fail to customer for closure
+        if not status:
+            return customer_pb2.AccountResponse(message="fail", money=balance)
+        
         return customer_pb2.AccountResponse(message="sucess", money=balance)
 
-    # Method to deposit the balance to the customer account
     def Deposit(self, request, context):
-        # get the deposit amount
+        logging.info("received request Deposit to: {} from customer {} ".format(self.branchId, request.customerId))        
         amount = request.amount
-        remoteClock = request.clock
-        eventId = request.eventId
-        logging.info("received request Deposit to: {} clock: {} ".format(self.branchId, remoteClock))
-        # Event Request        
-        Event_Request(self.branchId, eventId, 'deposit_request', self.clock, remoteClock, self.queue)        
-        # Event Execute
-        self.account.deposit(amount)                
-        Event_Execute(self.branchId, eventId,'deposit_execute', self.clock, self.queue)
+        customerId = request.customerId
+        customerWriteSet = request.writeset        
 
-        balance = self.account.balance
+        writeOperationId = self.idGenerator.nextNumber()
+        status = self.waitForWriteSetPropogation(customerId, customerWriteSet)
+
+        # if write is not propogated with retry mechanism returning fail to customer for closure
+        if not status:
+            return customer_pb2.AccountResponse(message="fail", write_operation_id=writeOperationId)
+
+        self.account.deposit(amount)        
+        self.addCustomerWriteSet(customerId, writeOperationId)
+
+        balance = self.account.balance        
         # propogate deposit
         for b in self.branches:
             if b['id'] != self.branchId:
-                port = PORT_BASE + b['id']
-                with grpc.insecure_channel("localhost:"+str(port)) as channel:
-                    stub = branch_pb2_grpc.SyncAccountStub(channel)
-                    response = stub.PropogateDeposit(branch_pb2.SyncAccountRequest(amount=amount, clock=self.clock.getClock(),eventId=eventId))                    
-                    remoteClock = response.clock                                                            
-                    # Propogate Response
-                    Propogate_Response(self.branchId, response.eventId, 'deposit_broadcast_response', self.clock, remoteClock, self.queue)
-                    logging.info('PropogateDeposit from: {} to: {} deposit:{} response: {}'.format(self.branchId, b['id'], amount, response.message))
-                    channel.close()
-        #Event response                    
-        Event_Response(self.branchId, eventId, 'deposit_response',self.clock, self.queue)            
-        return customer_pb2.AccountResponse(message="success", money=balance, clock=self.clock.getClock(),eventId=eventId)
+                port = self.port_base + b['id']                
+                # async propogate deposit to return response to the customer immediately
+                thread = threading.Thread(target=self.AsyncPropogateDeposit, args=(port,customerId,amount, writeOperationId))
+                thread.start()                
+        return customer_pb2.AccountResponse(message="success", money=balance, write_operation_id=writeOperationId)
 
-    # Method to withdraw the balance from the customer account
+    def AsyncPropogateDeposit(self, port, customerId, amount, writeOperationId):
+        with grpc.insecure_channel("localhost:"+str(port)) as channel:
+                stub = branch_pb2_grpc.SyncAccountStub(channel)
+                stub.PropogateDeposit(branch_pb2.SyncAccountRequest(amount=amount,customerId=customerId, write_operation_id=writeOperationId))
+                channel.close()
+
     def Withdraw (self, request, context):
+        logging.info("received request Withdraw to: {} from customer {} ".format(self.branchId, request.customerId))
         amount = request.amount
-        remoteClock = request.clock
-        eventId = request.eventId
-        logging.info("received request Withdraw to: {}".format(self.branchId))        
-        # Event Request        
-        Event_Request(self.branchId, eventId, 'withdraw_request', self.clock, remoteClock, self.queue)        
-        # Event Execute
-        self.account.withdraw(amount)                
-        Event_Execute(self.branchId, eventId,'withdraw_execute', self.clock, self.queue)
+        customerId = request.customerId
+        customerWriteSet = request.writeset    
+
+        writeOperationId = self.idGenerator.nextNumber()
+        status = self.waitForWriteSetPropogation(customerId, customerWriteSet)
+
+        if not status:
+            return customer_pb2.AccountResponse(message="fail", money=0, write_operation_id=writeOperationId)
+
+        self.account.withdraw(amount)        
+        self.addCustomerWriteSet(customerId, writeOperationId)
 
         balance = self.account.balance
         # propogate withdraw
         for b in self.branches:
             if b['id'] != self.branchId:
-                port = PORT_BASE + b['id']
-                with grpc.insecure_channel("localhost:"+str(port)) as channel:
-                    stub = branch_pb2_grpc.SyncAccountStub(channel)
-                    response = stub.PropogateWithdraw(branch_pb2.SyncAccountRequest(amount=amount,clock=self.clock.getClock(),eventId=eventId))                    
-                    remoteClock = response.clock                    
-                    # Propogate Response
-                    Propogate_Response(self.branchId, response.eventId, 'withdraw_broadcast_response', self.clock, remoteClock, self.queue)
-                    logging.info('PropogateWithdraw from: {} to: {} deposit:{} response: {}'.format(self.branchId, b['id'], amount, response.message))
-                    channel.close()
-        #Event response                    
-        Event_Response(self.branchId, eventId, 'withdraw_response',self.clock, self.queue)            
-        return customer_pb2.AccountResponse(message="success", money=balance, clock=self.clock.getClock(), eventId=eventId)
+                port = self.port_base + b['id']
+                # async propogate deposit to return response to the customer immediately
+                thread = threading.Thread(target=self.AsyncPropogateWithdraw, args=(port,customerId,amount, writeOperationId))
+                thread.start()                
+        return customer_pb2.AccountResponse(message="success", money=balance)
+    
+    def AsyncPropogateWithdraw(self,port,customerId, amount,writeOperationId ):
+        with grpc.insecure_channel("localhost:"+str(port)) as channel:
+            stub = branch_pb2_grpc.SyncAccountStub(channel)
+            stub.PropogateWithdraw(branch_pb2.SyncAccountRequest(amount=amount,customerId=customerId, write_operation_id=writeOperationId))            
+            channel.close()
+        
+    def PropogateDeposit(self, request, context):
+        amount = request.amount
+        customerId = request.customerId
+        writeOperationId = request.write_operation_id                
+        self.addCustomerWriteSet(customerId, writeOperationId)
+        self.account.deposit(amount)
+        return branch_pb2.SyncAccountResponse(message="success")
 
-# Account abstraction for real bank account of a customer
-class Account:    
-    def __init__(self, amount):
-        self.balance = amount
+    def PropogateWithdraw(self, request, context):
+        amount = request.amount
+        self.addCustomerWriteSet(request.customerId, request.write_operation_id)
+        self.account.withdraw(amount)
+        return branch_pb2.SyncAccountResponse(message="success")
+    
+    # maintain customer write set
+    def addCustomerWriteSet(self, customerId, write_operation_id):
+        if customerId not in self.writesets:
+            self.writesets[customerId] = []            
+        self.writesets[customerId].append(write_operation_id)
 
-    def setBalance(self, amount):
-        self.balance = amount    
+    def getCustomerWriteSet(self, customerId):
+        if customerId not in self.writesets:
+            self.writesets[customerId] = []
+        return self.writesets[customerId]       
 
-    def currentBalance(self):        
-        return self.balance
+    # This method waits for the write to propogate if in case the write is not present in customerWriteSet
+    def waitForWriteSetPropogation(self, customerId, customerWriteSet):
+        exists = False 
+        for write in customerWriteSet.write_operation_ids:
+            exists = write in self.getCustomerWriteSet(customerId)
+            if exists:
+                return True    
+            max_retries = 4
+            sleep_time = 1        
+            while not exists and max_retries != 0:
+                # exponential sleep time 1, 2, 4 and max of 4 retries
+                sleep_time = sleep_time * 2
+                time.sleep(sleep_time)            
+                exists = write in self.getCustomerWriteSet(customerId)
+                if exists:
+                    return True
+                max_retries = max_retries - 1
+                logging.info("retrying.... for {} for write {}".format(max_retries, write))
 
-    def deposit(self, amount):
-        self.balance = self.balance + amount        
+            if max_retries <= 0:
+                return False
+        return True
 
-    def withdraw(self, amount):
-        self.balance = self.balance - amount
-        if(self.balance < 0):
-            self.balance = 0        
+    def startBranchServer(self):
+        server = grpc.server(futures.ThreadPoolExecutor(max_workers=3))
+        customer_pb2_grpc.add_AccountServicer_to_server(self, server)
+        branch_pb2_grpc.add_SyncAccountServicer_to_server(self, server)
+        server.add_insecure_port("[::]:"+str(self.port))
+        logging.info('**** starting branch ****' + str(self.branchId) + ' on port ' +  str(self.port))            
+        server.start()
+        logging.info('**** started branch ****'+ str(self.branchId) + ' on port '+ str(self.port))
+        server.wait_for_termination()
 
-def serve(branches, branchId, port, initial_amount, queue):
-    logging.info('**** starting branch ****' + str(branchId) + ' on port ' +  str(port))
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=3))
-    account = Account(initial_amount)
-    # intialize clock per branch
-    clock = Clock(1)
-    # account service to handle customer requests
-    aservice = AccountService(branches, branchId, account, clock, queue)        
-    # branch service to handle branch-branch requests
-    bservice = BranchService(branchId, account, clock, queue)
-    customer_pb2_grpc.add_AccountServicer_to_server(aservice, server)
-    branch_pb2_grpc.add_SyncAccountServicer_to_server(bservice, server)
-    server.add_insecure_port("[::]:"+str(port))
-    # start the server
-    server.start()
-    logging.info('**** started branch ****'+ str(branchId) + ' on port '+ str(port))
-    server.wait_for_termination()
+def serve(branches, branchId, port_base, balance):
+    branch = Branch(branches, branchId, balance, port_base)
+    branch.startBranchServer()    
 
 #serve(1, 50051)       

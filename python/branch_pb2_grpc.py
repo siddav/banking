@@ -6,9 +6,7 @@ import branch_pb2 as branch__pb2
 
 
 class SyncAccountStub(object):
-    """*
-    MsgDelivery: branch requests on account
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
         """Constructor.
@@ -29,9 +27,7 @@ class SyncAccountStub(object):
 
 
 class SyncAccountServicer(object):
-    """*
-    MsgDelivery: branch requests on account
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def PropogateDeposit(self, request, context):
         """Propogate_Deposit
@@ -68,9 +64,7 @@ def add_SyncAccountServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class SyncAccount(object):
-    """*
-    MsgDelivery: branch requests on account
-    """
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def PropogateDeposit(request,

@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0c\x62ranch.proto\x12\x07\x62\x61nking\"U\n\x12SyncAccountRequest\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x05\x12\r\n\x05\x63lock\x18\x02 \x01(\x05\x12\x14\n\x07\x65ventId\x18\x03 \x01(\x05H\x00\x88\x01\x01\x42\n\n\x08_eventId\"W\n\x13SyncAccountResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\r\n\x05\x63lock\x18\x02 \x01(\x05\x12\x14\n\x07\x65ventId\x18\x03 \x01(\x05H\x00\x88\x01\x01\x42\n\n\x08_eventId2\xb0\x01\n\x0bSyncAccount\x12O\n\x10PropogateDeposit\x12\x1b.banking.SyncAccountRequest\x1a\x1c.banking.SyncAccountResponse\"\x00\x12P\n\x11PropogateWithdraw\x12\x1b.banking.SyncAccountRequest\x1a\x1c.banking.SyncAccountResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0c\x62ranch.proto\x12\x07\x62\x61nking\"T\n\x12SyncAccountRequest\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x05\x12\x12\n\ncustomerId\x18\x02 \x01(\t\x12\x1a\n\x12write_operation_id\x18\x03 \x01(\x05\"&\n\x13SyncAccountResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xb0\x01\n\x0bSyncAccount\x12O\n\x10PropogateDeposit\x12\x1b.banking.SyncAccountRequest\x1a\x1c.banking.SyncAccountResponse\"\x00\x12P\n\x11PropogateWithdraw\x12\x1b.banking.SyncAccountRequest\x1a\x1c.banking.SyncAccountResponse\"\x00\x62\x06proto3'
 )
 
 
@@ -41,14 +41,14 @@ _SYNCACCOUNTREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='clock', full_name='banking.SyncAccountRequest.clock', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
+      name='customerId', full_name='banking.SyncAccountRequest.customerId', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='eventId', full_name='banking.SyncAccountRequest.eventId', index=2,
+      name='write_operation_id', full_name='banking.SyncAccountRequest.write_operation_id', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -65,14 +65,9 @@ _SYNCACCOUNTREQUEST = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
-    _descriptor.OneofDescriptor(
-      name='_eventId', full_name='banking.SyncAccountRequest._eventId',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
   ],
   serialized_start=25,
-  serialized_end=110,
+  serialized_end=109,
 )
 
 
@@ -91,20 +86,6 @@ _SYNCACCOUNTRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='clock', full_name='banking.SyncAccountResponse.clock', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='eventId', full_name='banking.SyncAccountResponse.eventId', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -116,22 +97,11 @@ _SYNCACCOUNTRESPONSE = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
-    _descriptor.OneofDescriptor(
-      name='_eventId', full_name='banking.SyncAccountResponse._eventId',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
   ],
-  serialized_start=112,
-  serialized_end=199,
+  serialized_start=111,
+  serialized_end=149,
 )
 
-_SYNCACCOUNTREQUEST.oneofs_by_name['_eventId'].fields.append(
-  _SYNCACCOUNTREQUEST.fields_by_name['eventId'])
-_SYNCACCOUNTREQUEST.fields_by_name['eventId'].containing_oneof = _SYNCACCOUNTREQUEST.oneofs_by_name['_eventId']
-_SYNCACCOUNTRESPONSE.oneofs_by_name['_eventId'].fields.append(
-  _SYNCACCOUNTRESPONSE.fields_by_name['eventId'])
-_SYNCACCOUNTRESPONSE.fields_by_name['eventId'].containing_oneof = _SYNCACCOUNTRESPONSE.oneofs_by_name['_eventId']
 DESCRIPTOR.message_types_by_name['SyncAccountRequest'] = _SYNCACCOUNTREQUEST
 DESCRIPTOR.message_types_by_name['SyncAccountResponse'] = _SYNCACCOUNTRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -159,8 +129,8 @@ _SYNCACCOUNT = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=202,
-  serialized_end=378,
+  serialized_start=152,
+  serialized_end=328,
   methods=[
   _descriptor.MethodDescriptor(
     name='PropogateDeposit',

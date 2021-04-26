@@ -3,13 +3,10 @@
 import grpc
 
 import customer_pb2 as customer__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class AccountStub(object):
-    """*
-    MsgDelivery: customer requests on account
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
         """Constructor.
@@ -19,7 +16,7 @@ class AccountStub(object):
         """
         self.Query = channel.unary_unary(
                 '/banking.Account/Query',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                request_serializer=customer__pb2.AccountRequest.SerializeToString,
                 response_deserializer=customer__pb2.AccountResponse.FromString,
                 )
         self.Deposit = channel.unary_unary(
@@ -35,9 +32,7 @@ class AccountStub(object):
 
 
 class AccountServicer(object):
-    """*
-    MsgDelivery: customer requests on account
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def Query(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -62,7 +57,7 @@ def add_AccountServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Query': grpc.unary_unary_rpc_method_handler(
                     servicer.Query,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    request_deserializer=customer__pb2.AccountRequest.FromString,
                     response_serializer=customer__pb2.AccountResponse.SerializeToString,
             ),
             'Deposit': grpc.unary_unary_rpc_method_handler(
@@ -83,9 +78,7 @@ def add_AccountServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class Account(object):
-    """*
-    MsgDelivery: customer requests on account
-    """
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def Query(request,
@@ -99,7 +92,7 @@ class Account(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/banking.Account/Query',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            customer__pb2.AccountRequest.SerializeToString,
             customer__pb2.AccountResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
